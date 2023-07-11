@@ -48,6 +48,7 @@ libworkbench_deps = [
   dependency('gio-2.0', version: '>= 2.76.0'),
   dependency('gtk4', version: '>= 4.10.0'),
   dependency('gtksourceview-5', version: '>= 5.8.0'),
+  dependency('libadwaita-1', version: '>= 1.3'),
 ]
 
 if get_option('profile') != 'development'
@@ -59,11 +60,13 @@ endif
 
 libworkbench_headers = files([
   'workbench.h',
+  'workbench-dbus-previewer.h',
   'workbench-completion-provider.h',
   'workbench-completion-request.h',
 ])
 
 libworkbench_sources = files([
+  'workbench-dbus-previewer.c',
   'workbench-completion-provider.c',
   'workbench-completion-request.c',
 ])
@@ -101,7 +104,7 @@ libworkbench_gir = gnome.generate_gir(libworkbench,
         symbol_prefix: meson.project_name().to_lower(),
               sources: [libworkbench_headers, libworkbench_sources, libworkbench_enums],
            extra_args: ['--c-include=workbench.h'],
-             includes: ['Gio-2.0', 'Gtk-4.0', 'GtkSource-5'],
+             includes: ['Gio-2.0', 'Gtk-4.0', 'GtkSource-5', 'Adw-1'],
       install_dir_gir: girdir,
   install_dir_typelib: typelibdir,
               install: true,
@@ -110,7 +113,7 @@ libworkbench_gir = gnome.generate_gir(libworkbench,
 # Vala API Bindings
 libworkbench_vapi = gnome.generate_vapi(libworkbench_api_name,
        sources: libworkbench_gir[0],
-      packages: ['gio-2.0', 'gtk4', 'gtksourceview-5'],
+      packages: ['gio-2.0', 'gtk4', 'gtksourceview-5', 'libadwaita-1'],
        install: true,
    install_dir: vapidir,
 )
